@@ -1,0 +1,40 @@
+<%
+# Copyright (C) 2014  Witesy Contributors
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<%= render "shared/error_messages", :target => @customer %>
+<%= form_for @customer, html: { role: 'form' } do |f| %>
+    <div class="form-group">
+        <%= f.label :label, 'Label or Customer ID' %>
+        <%= f.text_field :label, { class: 'form-control', placeholder: 'Label or Customer ID' } %>
+    </div>
+
+    <div class="form-group">
+        <%= f.label :name %>
+        <%= f.text_field :name, { class: 'form-control', placeholder: 'Name' } %>
+    </div>
+    <div class="well well-sm customer_addresses">
+    <h4><span class="glyphicon glyphicon-credit-card">&nbsp;</span>Addresses</h4>
+    <% @customer.addresses.each do |ad| %>
+        <%= f.fields_for :addresses, ad do |address| %>
+          <%= render 'customers/edit_address_fields', { f: address } %>
+        <% end %>
+    <% end %>
+      <%= link_to_add_fields "Add Address", f, :addresses, "add_fields"%>
+    </div>
+
+
+    <%= render "shared/resetsave", { associated_form: f } %>
+<% end %>

@@ -39,3 +39,5 @@ build/
 /log/*
 !/log/.keep
 /tmp
+*public/assets
+*.DS_Store
