@@ -1,0 +1,48 @@
+body {
+    padding-top: 70px;
+}
+
+.field_with_errors label {
+    border: 0;
+}
+
+.field_with_errors input, select {
+    border: 1px solid red;
+}
+
+.lt-table_line {
+    cursor: pointer;
+}
+
+.disabled_progress_bar {
+    visibility: hidden;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 999px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    background: red;
+    cursor: inherit;
+    display: block;
+}
+
+#toggle_menu_item {
+    top: 10px;
+    visibility: hidden;
+}
+
+.toggle_checkbox {
+    display: none;
+}
