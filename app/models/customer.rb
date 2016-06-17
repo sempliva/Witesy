@@ -1,5 +1,5 @@
 =begin
-Copyright (C) 2014  Witesy Contributors
+Copyright (C) 2016 Witesy Contributors
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -15,18 +15,16 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 =end
 
-class Customer
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  field :name, type: String
-  field :label, type: String
+class Customer < ActiveRecord::Base
+  validates :name, :addresses, :label, presence: true
   validates :label, length: { maximum: 20 }
-  validates_uniqueness_of :name
-  validates_uniqueness_of :label
+  validates_uniqueness_of :name, :label
   validates :name, :label, format: { with: WitesyConfiguration::INPUT_ALLOWED_SYMBOLS, message: "The only value allowed are: , - . & alphanumeric values" }
 
-  embeds_many :addresses
+  has_and_belongs_to_many :addresses
   accepts_nested_attributes_for :addresses, :allow_destroy => true
+  has_many :orders
+
   def name=(value)
     write_attribute(:name, value.try(:strip))
   end

@@ -1,0 +1,22 @@
+one:
+  contact_name: contact address one
+  street: street
+  city: city
+  zip: zip
+  state: ST
+  country: country
+
+two:
+  contact_name: contact address two
+  street: strada
+  city: citta
+  zip: zip
+  state: St
+  country: paese
+
+three:
+  contact_name: contact address three
+  street: strada
+  city: citta
+  zip: zip
+  state: St

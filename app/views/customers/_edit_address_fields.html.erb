@@ -1,5 +1,5 @@
 <%
-# Copyright (C) 2014  Witesy Contributors
+# Copyright (C) 2016 Witesy Contributors
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,6 +40,10 @@
 <%= f.label :country %>
 <%= f.text_field :country, { class: 'form-control', value: 'USA', disabled: true } %>
 </div>
- <%= f.hidden_field :_destroy %>
- <%= link_to "Remove address", '#', class: "remove_fields_address" %>
+ <div class="form-group destroy_address">
+<%= f.label '_destroy' do %>
+  <%= f.check_box '_destroy' %>
+  Delete Address
+<% end %>
+</div>
 </div>

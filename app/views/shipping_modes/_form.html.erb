@@ -1,0 +1,8 @@
+<%= render "shared/error_messages", :target => @shipping_mode %>
+<%= form_for @shipping_mode, html: { role: 'form' } do |f| %>
+    <div class="form-group">
+        <%= f.label :mode %>
+        <%= f.text_field :mode, { class: 'form-control', placeholder: 'Shipping Mode' } %>
+    </div>
+    <%= render "shared/resetsave", { associated_form: f } %>
+<% end %>

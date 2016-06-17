@@ -1,0 +1,33 @@
+<div class="well well-sm item">
+  <%= f.hidden_field :id %>
+  <div class="form-group">
+  <%= f.label :item_number, 'Item Number' %>
+  <%= f.text_field :item_number, { class: 'form-control', placeholder: 'Item Number' } %>
+  </div>
+
+  <div class="form-group">
+  <%= f.label :description, 'Description' %>
+  <%= f.text_field :description, { class: 'form-control', placeholder: 'Description' } %>
+  </div>
+
+  <div class="form-group">
+  <%= f.label :quantity %>
+  <%= f.text_field :quantity, { class: 'form-control', placeholder: 'Q.ty', size: 4 } %>
+  </div>
+
+  <div class="form-group">
+  <%= f.label :price %>
+  <%= f.text_field :price, { class: 'form-control', placeholder: 'Price', size: 6 } %>
+  </div>
+
+  <div class="form-group">
+  <%= f.label :note %>
+  <%= f.text_area :note, { class: 'form-control', placeholder: 'Item Note' } %>
+  </div>
+  <div class="form-group destroy_item">
+  <%= f.label '_destroy' do %>
+  <%= f.check_box '_destroy' %>
+   Delete Item
+  <% end %>
+  </div>
+</div>

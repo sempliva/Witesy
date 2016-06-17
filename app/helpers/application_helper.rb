@@ -13,4 +13,16 @@ module ApplicationHelper
     # 'data' contains the content to add.
     link_to(name, '#', class: css_class, data: { id: id, fields: fields.gsub("\n", "") })
   end
+
+  # Used ActionController::Base base helper to remove tags from user input and extra leading, trailing and inner whitespace
+  def sanitize_user_input(value)
+    value = ActionController::Base.helpers.strip_tags(value)
+    remove_whitespace(value)
+  end
+
+  # Used to remove extra leading, trailing and inner whitespace
+  def remove_whitespace(value)
+    value = value.strip
+    value = value.squeeze(" ")
+  end
 end

@@ -1,5 +1,5 @@
 =begin
-Copyright (C) 2014  Witesy Contributors
+Copyright (C) 2016 Witesy Contributors
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

@@ -1,5 +1,5 @@
 =begin
-Copyright (C) 2014  Witesy Contributors
+Copyright (C) 2016 Witesy Contributors
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,22 +17,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class CustomersController < ApplicationController
   before_action :set_customer, only: [:show, :edit, :update, :destroy]
-
-  # GET /customers
-  # GET /customers.json
   def index
     @customers = Customer.all.order(label: :asc)
   end
 
-  # GET /customers/new
   def new
     @customer = Customer.new
     @customer.addresses.build
   end
 
-
-  # POST /customers
-  # POST /customers.json
   def create
     @customer = Customer.create(customer_params)
     if @customer.save
@@ -43,11 +36,8 @@ class CustomersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /customers/1
-  # PATCH/PUT /customers/1.json
   def update
-    print(customer_params)
-    if @customer.update_attributes(customer_params)
+    if @customer.update(customer_params)
       flash[:success] = "Customer updated!"
       redirect_to @customer
     else
@@ -55,9 +45,13 @@ class CustomersController < ApplicationController
     end
   end
 
-  # DELETE /customers/1
-  # DELETE /customers/1.json
   def destroy
+    if Order.where("customer_id = ?", params[:id]).present?
+      flash[:warning] = "This customer cannot be deleted because there are associated orders!"
+      redirect_to "/customers/" + @customer.id.to_s
+    return
+    end
+
     if @customer.delete
       flash[:success] = "Customer has been deleted successfully!"
       redirect_to "/customers/"
@@ -67,12 +61,22 @@ class CustomersController < ApplicationController
     end
   end
 
-  private
-    def set_customer
-      @customer = Customer.find(params[:id])
+  def autocomplete_customers
+    if params[:term]
+      params[:term] = params[:term].gsub(/[^a-zA-Z0-9\s]/, '_')
+      @customers = Customer.order(:name).where("lower(name) like ?", "#{(params[:term]).downcase}%")
     end
+    respond_to do |format|
+      format.json { render :json => @customers.map(&:name) }
+    end
+  end
 
-    def customer_params
-      params.require(:customer).permit!
-    end
+private
+  def set_customer
+    @customer = Customer.find(params[:id])
+  end
+
+  def customer_params
+    params.require(:customer).permit!
+  end
 end

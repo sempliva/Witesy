@@ -1,5 +1,5 @@
 =begin
-Copyright (C) 2014  Witesy Contributors
+Copyright (C) 2016 Witesy Contributors
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -15,22 +15,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 =end
 
-class Address
-  # store_in collection: "addresses"
-
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  field :contact_name, type: String
-  field :street, type: String
-  field :city, type: String
-  field :state, type: String
-  field :zip, type: String
-  field :country, type: String
-
+class Address < ActiveRecord::Base
   validates :street, :city, :state, :zip, presence: true
   validates :state, length: { is: 2 }
+#  belongs_to :addressable, polymorphic: true
+  has_and_belongs_to_many :customers
   after_initialize :init
-  embedded_in :customer, :inverse_of => :addresses
 
   def init
     self.country ||= "USA"
