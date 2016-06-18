@@ -19,7 +19,6 @@ class Customer < ActiveRecord::Base
   validates :name, :addresses, :label, presence: true
   validates :label, length: { maximum: 20 }
   validates_uniqueness_of :name, :label
-  validates :name, :label, format: { with: WitesyConfiguration::INPUT_ALLOWED_SYMBOLS, message: "The only value allowed are: , - . & alphanumeric values" }
 
   has_and_belongs_to_many :addresses
   accepts_nested_attributes_for :addresses, :allow_destroy => true

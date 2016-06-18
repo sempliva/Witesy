@@ -1,3 +1,19 @@
+=begin
+Copyright (C) 2014  Witesy Contributors
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+=end
 module ApplicationHelper
   # A little bit of explanation: this creates a new link to add new content
   # dynamically.
@@ -14,15 +30,15 @@ module ApplicationHelper
     link_to(name, '#', class: css_class, data: { id: id, fields: fields.gsub("\n", "") })
   end
 
-  # Used ActionController::Base base helper to remove tags from user input and extra leading, trailing and inner whitespace
-  def sanitize_user_input(value)
-    value = ActionController::Base.helpers.strip_tags(value)
-    remove_whitespace(value)
-  end
-
   # Used to remove extra leading, trailing and inner whitespace
   def remove_whitespace(value)
     value = value.strip
     value = value.squeeze(" ")
   end
+
+  # Function to generate password digests, used almost everywhere.
+  def witesy_digest(salt, password)
+    Digest::SHA2.hexdigest(salt + WitesyConfiguration::SALT + password)
+  end
+
 end

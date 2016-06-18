@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 =end
 
 class UtilitiesController < ApplicationController
+  before_action :check_user_status
   # * BEGIN - Customer Utility Methods, used while adding a new Order
 
   # Load customer information based on the customer_name including billing addresses information

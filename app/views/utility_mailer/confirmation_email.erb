@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Welcome to Witesy</h1>
+    <p>
+      You have successfully signed up,
+      your username is: <%= @email %>.<br>
+    </p>
+    <p>
+      To confirm to the site, just follow this link: <%= link_to "Confirm Email", "https://witesy-dev.herokuapp.com/" + confirm_email_path(token: @token), :target => "_blank" %>  in the next 24 hours.
+    </p>
+    <p>Thanks for joining and have a great day!</p>
+  </body>
+</html>

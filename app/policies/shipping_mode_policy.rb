@@ -1,0 +1,2 @@
+class ShippingModePolicy < ApplicationPolicy
+end
