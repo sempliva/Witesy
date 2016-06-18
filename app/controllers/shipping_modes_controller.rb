@@ -16,17 +16,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 =end
 
 class ShippingModesController < ApplicationController
+  before_action :check_user_status
   before_action :set_shipping_mode, only: [:show, :edit, :update]
   def index
     @shipping_modes = ShippingMode.all
+    authorize ShippingMode
   end
 
   def new
     @shipping_mode = ShippingMode.new
+    authorize @shipping_mode
   end
 
   def create
     @shipping_mode = ShippingMode.new(shipping_mode_params)
+    authorize @shipping_mode
       if @shipping_mode.save
         flash[:success] = "Shipping Mode created!"
         redirect_to @shipping_mode
@@ -47,6 +51,7 @@ class ShippingModesController < ApplicationController
 private
   def set_shipping_mode
     @shipping_mode = ShippingMode.find(params[:id])
+    authorize @shipping_mode
   end
 
   def shipping_mode_params

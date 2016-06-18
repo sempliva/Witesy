@@ -16,12 +16,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 =end
 
 class UtilitiesController < ApplicationController
+  before_action :check_user_status
   # * BEGIN - Customer Utility Methods, used while adding a new Order
 
   # Load customer information based on the customer_name including billing addresses information
   def load_by_customer_name
     customer_name = request.headers["HTTP_CUSTOMER_NAME"]
-    @customer = Customer.where("name = ?", customer_name).first
+    @customer = Customer.find_by(name: customer_name)
     respond_to do |format|
       format.json { render :json => @customer.to_json() }
     end
@@ -29,7 +30,7 @@ class UtilitiesController < ApplicationController
 
   def load_contacts_by_customer_name
     customer_name = request.headers["HTTP_CUSTOMER_NAME"]
-    @customer = Customer.includes(:addresses).where("customers.name= ?", customer_name).first
+    @customer = Customer.includes(:addresses).find_by("customers.name= ?", customer_name)
     respond_to do |format|
       format.json { render :json => @customer.addresses.map(&:contact_name).to_json() }
     end
@@ -47,6 +48,7 @@ class UtilitiesController < ApplicationController
   end
 
   # Load first address available from addresses based on a specific contact name. Used to populate shipping address fields while adding a new order.
+  # TODO: check functionality.
   def load_address_by_contact_name
     contact_name = request.headers["HTTP_CONTACT_NAME"]
     customer_name = request.headers["HTTP_CUSTOMER_NAME"]

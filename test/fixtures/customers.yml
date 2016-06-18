@@ -1,9 +1,0 @@
-customer_one:
-  label: CN
-  name: Company name
-  addresses: one, two
-
-customer_two:
-  label: CN2
-  name: Company two
-  addresses: three

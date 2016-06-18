@@ -23,22 +23,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 require 'open-uri'
+require 'securerandom'
 
 shipping_modes = ["UPS RED", "UPS Blue", "UPS Ground", "Customer pickup", "FedEx", "Hand delivery"]
 shipping_modes.each do |mode|
   ShippingMode.find_or_create_by(mode: mode)
 end
 
-# Remove comments to enable order seeds
-#address = Address.create(:street=> "100 Hundred", :zip => "100", :state => "CA", :city => "San Francisco")
-#customer = Customer.create(:name => "ACME Electronics", :address => address)
-#order = Order.create(:customer => customer, :address => address, :ship_by => Date.today(), :sales_order_number => "1", :customer_po => "1235", :shipping_mode => "UPS", :payment_term => "30 days", :order_date => Date.today())
-#analysis = Analysis.create(:order => order, :analysis_number => "1", :lot_date_code => "201212", :quantity => 3, :price => 300 , :component_id=> 1)
-#line_item = LineItem.create(:analysis => analysis, :type_analysis_id => 1, :specification_id => 1)
-#serial = Serial.create(:serial => "1234567", :component_id => 1, :line_item => line_item)
+role_admin = Role.create(name: "admin")
+role_user = Role.create(name: "user")
+user = User.new(:nickname => "admin1", :email => "admin@admin.com", :password => "password", :confirmed_email => true)
+user.save
 
-#order = Order.create(:customer => customer, :address => address, :ship_by => Date.today(), :sales_order_number => "2", :customer_po => "12", :shipping_mode => "UPS", :payment_term => "30 days", :order_date => Date.today())
-#analysis = Analysis.create(:order => order, :analysis_number => "2", :lot_date_code => "201212", :quantity => 3, :price => 300 , :component_id=> 2)
-#line_item = LineItem.create(:analysis => analysis, :type_analysis_id => 1, :specification_id => 1)
-#serial = Serial.create(:serial => "234567890", :component_id => 2, :line_item => line_item)
-# End order seeds
+assignments = Assignment.create(:role => role_admin, :user => user)

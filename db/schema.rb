@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160614212228) do
+ActiveRecord::Schema.define(version: 20160619034418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,16 @@ ActiveRecord::Schema.define(version: 20160614212228) do
 
   add_index "addresses_customers", ["address_id"], name: "index_addresses_customers_on_address_id", using: :btree
   add_index "addresses_customers", ["customer_id"], name: "index_addresses_customers_on_customer_id", using: :btree
+
+  create_table "assignments", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "role_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "assignments", ["role_id"], name: "index_assignments_on_role_id", using: :btree
+  add_index "assignments", ["user_id"], name: "index_assignments_on_user_id", using: :btree
 
   create_table "customers", force: :cascade do |t|
     t.string   "name"
@@ -75,6 +85,12 @@ ActiveRecord::Schema.define(version: 20160614212228) do
 
   add_index "orders", ["order_number"], name: "index_orders_on_order_number", unique: true, using: :btree
 
+  create_table "roles", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "shipping_modes", force: :cascade do |t|
     t.string   "mode"
     t.datetime "created_at"
@@ -83,4 +99,24 @@ ActiveRecord::Schema.define(version: 20160614212228) do
 
   add_index "shipping_modes", ["mode"], name: "index_shipping_modes_on_mode", unique: true, using: :btree
 
+  create_table "tokens", force: :cascade do |t|
+    t.string   "token"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "nickname"
+    t.string   "email"
+    t.string   "password"
+    t.string   "salt"
+    t.boolean  "confirmed_email", default: false
+    t.datetime "last_login"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_foreign_key "assignments", "roles"
+  add_foreign_key "assignments", "users"
 end
