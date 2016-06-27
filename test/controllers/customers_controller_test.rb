@@ -1,5 +1,5 @@
 =begin
-Copyright (C) 2014  Witesy Contributors
+Copyright (C) 2016 Witesy Contributors
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,54 +18,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 require 'test_helper'
 
 class CustomersControllerTest < ActionController::TestCase
+
+  # Tests controllers's method using fixture
+  fixtures :addresses, :customers, :orders
+
+  def setup
+    #request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials(LittletubeConfiguration::Authentication::USERNAME,LittletubeConfiguration::Authentication::PASSWORD)
+    @billing_address = addresses(:one)
+    @customer = customers(:customer_one)
+    @order_one = orders(:order_one)
+    @order_two = orders(:order_two)
+  end
+
   test "should get index" do
     get :index
     assert_response :success
     assert_not_nil assigns(:customers)
   end
 
-  test "should get new" do
-    get :new
+  test "should get show" do
+    get :show, { :id => @customer.id }
     assert_response :success
+    assert_not_nil assigns(:customer)
   end
 
   test "should create customer" do
     assert_difference('Customer.count') do
-      @customer = Customer.new(:name => "customerSave", :label => "Csave")
-      post :create, customer: { created_at: @customer.created_at, label: @customer.label, name: @customer.name, updated_at: @customer.updated_at }
+      post :create, customer: { label: "CP", name: "company",
+          addresses_attributes: {"0"=>{contact_name: "Contact Name", street: "street", city: "city", zip: "zip",  state: "CA"},
+                               "1"=>{contact_name: "Contact Name1", street: "street1", city: "city1", zip: "zip1",  state: "CA"}}}
     end
-
     assert_redirected_to customer_path(assigns(:customer))
   end
 
-  test "should show customer" do
-    @customer = Customer.new(:name => "CustomerShow", :label => "Cshow")
-    @customer.save
-    get :show, id: @customer.id
-    assert_response :success
-  end
-
-  test "should get edit" do
-    @customer = Customer.new(:name => "CustomerEdit", :label => "Cedit")
-    @customer.save
-    get :edit, id: @customer.id
-    assert_response :success
-  end
-
-  test "should update customer" do
-    @customer = Customer.new(:name => "CustomerUpdate", :label => "Cupdate")
-    @customer.save
-    patch :update, id: @customer, customer: { created_at: @customer.created_at, label: @customer.label, name: @customer.name, updated_at: @customer.updated_at }
-    assert_redirected_to customer_path(assigns(:customer))
-  end
-
-  test "should destroy customer" do
-    @customer = Customer.new(:name => "CustomerDestroy", :label => "Cdestroy")
-    @customer.save
-    assert_difference('Customer.count', -1) do
-      delete :destroy, id: @customer.id
-    end
-
-    assert_redirected_to "/customers/"
+  def test_routes
+    assert_routing "customers/2", { :controller => 'customers', :id => '2', :action => 'show' }
+    assert_routing "customers/new", { :controller => 'customers', :action => 'new' }
   end
 end

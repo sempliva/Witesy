@@ -1,5 +1,5 @@
 <%
-# Copyright (C) 2014  Witesy Contributors
+# Copyright (C) 2016 Witesy Contributors
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,12 +29,10 @@
     <h4><span class="glyphicon glyphicon-credit-card">&nbsp;</span>Addresses</h4>
     <% @customer.addresses.each do |add| %>
         <%= f.fields_for :addresses, add do |address| %>
-          <%= render 'customers/address_fields', { f: address } %>
+          <%= render 'customers/edit_address_fields', { f: address } %>
         <% end %>
     <% end %>
-      <%= link_to_add_fields "Add Address", f, :addresses, "add_fields"%>
+      <%= link_to_add_fields "Add Address", f, :addresses, "add_fields_address"%>
     </div>
-
-
     <%= render "shared/resetsave", { associated_form: f } %>
 <% end %>

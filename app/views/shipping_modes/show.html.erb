@@ -1,0 +1,15 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Shipping Mode
+    </div>
+    <div class="panel-body">
+        <p>
+          <strong><%= @shipping_mode.mode %></strong><br/>
+        </p>
+    </div>
+</div>
+<div class="text-center">
+    <div class="btn-group btn-group-sm">
+        <a href="/shipping_modes/<%= @shipping_mode.id %>/edit" role="button" class="btn btn-default" data-no-turbolink="true"><span class="glyphicon glyphicon-export"></span>&nbsp;Edit</a>
+    </div>
+</div>

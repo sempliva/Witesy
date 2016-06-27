@@ -1,4 +1,4 @@
-# Copyright (C) 2014  Witesy Contributors
+# Copyright (C) 2016 Witesy Contributors
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ window.customer_clicked = (item) ->
   window.location.href = "/customers/#{item}"
 
 # "Add Address" links.
-$(document).on 'click', '.add_fields', (event) ->
+$(document).on 'click', '.add_fields_address', (event) ->
     time = new Date().getTime()
     regexp = new RegExp($(this).data('id'), 'g')
     $(this).before($(this).data('fields').replace(regexp, time))
@@ -29,9 +29,8 @@ $(document).on 'click', '.add_fields', (event) ->
 
 # Used to remove the address div with class 'remove_fields_address' if the current customer has at least one address left
 $(document).on 'click', 'form .remove_fields_address', (event) ->
-  $(this).prev('input[type=hidden]').val('1')
-  removable_address = $(this).closest('div.address');
-  size = $(this).closest('div.customer_addresses').children(".address").size()
+  removable_address = $(this).closest("div.address")
+  size = $("div.customer_addresses").children(".address").size()
   if size > 1
-    removable_address.hide()
+    removable_address.remove()
   event.preventDefault()

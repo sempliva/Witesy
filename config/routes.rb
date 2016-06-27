@@ -1,5 +1,5 @@
 =begin
-Copyright (C) 2014  Witesy Contributors
+Copyright (C) 2016 Witesy Contributors
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,12 +16,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 =end
 
 Rails.application.routes.draw do
+  # We want this to have priority, so it comes before the default routes for Customers.
+  get 'customers/autocomplete_customers' => 'customers#autocomplete_customers', as: :autocomplete_customers
   resources :customers
+  # Customer Utilities methods while adding a new Order
+  get 'orders/load_by_customer_name' => 'utilities#load_by_customer_name'
+  get 'orders/get_last_customer_shipping_mode' => 'utilities#get_last_customer_shipping_mode'
+  get 'orders/load_address' => 'utilities#load_address_by_contact_name'
+  get 'orders/load_contacts_by_customer_name' => 'utilities#load_contacts_by_customer_name'
+  delete 'orders/destroy_multiple' => 'orders#destroy_multiple'
+  resources :orders
+  resources :shipping_modes
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
+  # You can have the root of your site routed with "root"
+  root :to => "orders#index"
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

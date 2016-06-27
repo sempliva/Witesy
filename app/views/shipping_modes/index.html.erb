@@ -1,0 +1,12 @@
+    <div class="panel panel-default">
+    <div class="panel-heading">Shipping Modes</div>
+    <table class="table table-hover table-condensed">
+        <tbody>
+        <% @shipping_modes.each do |shipping_mode| %>
+            <tr class="lt-table_line" onclick="javascript:shipping_mode_clicked(<%= shipping_mode.id %>)">
+                <td><%= shipping_mode.mode %></td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+    </div>

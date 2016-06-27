@@ -1,0 +1,84 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Order data
+    </div>
+    <div class="panel-body">
+        <p>
+            <strong>Order Number</strong>: <%= @order.order_number %><br/>
+            <strong>Order Date</strong>: <%= (@order.order_date && @order.order_date.strftime('%m/%d/%Y')) %><br/>
+            <strong>Ship-by Date</strong>: <%= (@order.ship_by && @order.ship_by.strftime('%m/%d/%Y')) %><br/>
+            <strong>Shipping Mode</strong>: <%= @order.shipping_mode %><br/>
+            <strong>Payment Term</strong>: <%= @order.payment_term %><br/>
+        </p>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Billing Address
+    </div>
+    <div class="panel-body">
+        <p>
+            <address>
+                <strong><%= @order.customer.name %></strong><br/>
+                <%= @order.billing_address.street %><br/>
+                <%= @order.billing_address.city %>, <%= @order.billing_address.state %> <%= @order.billing_address.zip %><br/>
+                <%= @order.billing_address.country %>
+            </address>
+            <% if @order.billing_address.contact_name? %>
+            <address>
+                <strong>Contact Name</strong><br/>
+                <%= @order.billing_address.contact_name %>
+            </address>
+            <% end %>
+        </p>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Shipping Address
+    </div>
+    <div class="panel-body">
+        <p>
+            <address>
+                <strong><%= @order.customer.name %></strong><br/>
+                <%= @order.shipping_address.street %><br/>
+                <%= @order.shipping_address.city %>, <%= @order.shipping_address.state %> <%= @order.shipping_address.zip %><br/>
+                <%= @order.shipping_address.country %>
+            </address>
+            <% if @order.shipping_address.contact_name? %>
+            <address>
+                <strong>Contact Name</strong><br/>
+                <%= @order.shipping_address.contact_name %>
+            </address>
+            <% end %>
+        </p>
+    </div>
+</div>
+
+<% @order.items.each do |item| %>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Item Number: <%= item.item_number %></div>
+    <div class="panel-body">
+        <p>
+            <strong>Description</strong>: <%= item.description %><br/>
+            <strong>Quantity</strong>: <%= item.quantity %><br/>
+            <strong>Price</strong>: <%= item.price %><br/>
+        </p>
+        <% if item.note %>
+            <p><strong>Note</strong>: <%= item.note %></p>
+        <% end %>
+
+
+</div>
+<% end %>
+<div class="text-center">
+    <div class="btn-group btn-group-sm">
+        <a href="/orders/<%= @order.id %>/edit" role="button" class="btn btn-default" data-no-turbolink="true">
+        <span class="glyphicon glyphicon-edit"></span>&nbsp;Edit</a>
+       <a href="/orders/<%= @order.id %>" data-method="delete" data-confirm="Are you sure?" role="button" class="btn btn-default" data-no-turbolink="true">
+        <span class="glyphicon glyphicon-remove"></span>&nbsp;Delete Order</a>
+    </div>
+</div>

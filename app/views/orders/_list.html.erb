@@ -1,0 +1,38 @@
+    <div class="panel panel-default">
+    <div class="panel-heading">Orders<a href="javascript:void(0)" class="toggle_selection_orders pull-right" data-no-turbolinks="true">Toggle Selection</a></div>
+    <table class="table table-hover table-condensed">
+    <thead>
+        <tr>
+            <th width="20"></th>
+            <th><%= link_to "Order #", :sort => "order_number" %></th>
+            <th><%= link_to "Order Date", :sort => "order_date" %></th>
+            <th>Customer</th>
+            <th>Ship-By Date</th>
+            <th>No. of Items</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @orders.each do |order| %>
+            <tr class="lt-table_line" onclick="javascript:order_clicked('<%= order.id %>')">
+                <td onclick="event.stopPropagation();">
+                <%= check_box_tag "orders_ids[#{order.id}]", order.id, nil, class: 'toggle_checkbox' %>
+                </td>
+                <td><%= order.order_number %></td>
+                <td><%= (order.order_date && order.order_date.strftime('%m/%d/%Y')) %></td>
+                <td><%= order.customer.name %></td>
+                <td><%= (order.ship_by && order.ship_by.strftime('%m/%d/%Y')) %></td>
+                <td><%= order.items.length %></td>
+                <td><%= order.items.each.map { |item| item.price ? item.price : 0.00 }.sum %>
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+    </table>
+    </div>
+    <div id="toggle_menu_item" class="text-center">
+          <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-danger" onclick="javascript:delete_orders()" id="delete_orders" data-confirm="Are you sure?"><span class="glyphicon glyphicon-remove"></span>&nbsp;Delete Orders</button>
+          </div>
+      </div>
+    <%= paginate @orders %>

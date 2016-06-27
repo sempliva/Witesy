@@ -1,5 +1,5 @@
 =begin
-Copyright (C) 2014  Witesy Contributors
+Copyright (C) 2016 Witesy Contributors
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,4 +19,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module WitesyConfiguration
   INPUT_ALLOWED_SYMBOLS = /\A[a-zA-Z0-9\-,\.\s&]+\z/
+  PAGINATION_PREFERENCE = 50
 end

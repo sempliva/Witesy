@@ -1,0 +1,70 @@
+<!-- New Order Form -->
+<%= render "shared/error_messages", :target => @order %>
+<%= form_for @order, html: { role: 'form' } do |main_form| %>
+    <div class="form-group">
+        <%= main_form.label :customer_name, 'Customer Name' %>
+        <%= main_form.text_field(:customer_name, { class: 'form-control', placeholder:'Customer Name', data: { autocomplete_source: autocomplete_customers_path }}) %>
+    </div>
+
+    <!-- Customer Data (Billing Address) -->
+    <div class="well well-sm">
+    <h4><span class="glyphicon glyphicon-credit-card">&nbsp;</span>Billing Address</h4>
+    <%= main_form.fields_for :customer, @order.customer do |customer| %>
+      <%= customer.hidden_field :id %>
+      <div class="form-group">
+        <%= customer.label :label, 'Label or Customer ID' %>
+        <%= customer.text_field :label, { class: 'form-control', placeholder: 'Label or Customer ID', disabled: true } %>
+      </div>
+    <% end %>
+      <%= main_form.fields_for :billing_address, @order.billing_address do |billing_address| %>
+        <%= render 'edit_address_fields', { f: billing_address } %>
+      <% end %>
+
+    </div>
+
+    <!-- Shipping Address -->
+    <div class="well well-sm">
+    <h4><span class="glyphicon glyphicon-inbox">&nbsp;</span>Shipping Address</h4>
+    <%= main_form.fields_for :shipping_address, @order.shipping_address do |shipping_address| %>
+      <%= render 'edit_address_fields', { f: shipping_address } %>
+    <% end %>
+    <button type="button" id="clone_address" class="btn btn-default btn-sm">Same as Billing Address</button>
+    </div>
+
+    <div class="form-group">
+        <%= main_form.label :order_number, 'Order Number' %>
+        <%= main_form.text_field :order_number, { class: 'form-control', placeholder: 'Order Number' } %>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-6">
+                <%= main_form.label :order_date, 'Order Date' %>
+                <%= main_form.text_field :order_date, { class: 'form-control datepicker', placeholder: 'Order Date' } %>
+            </div>
+            <div class="col-xs-6">
+                <%= main_form.label :ship_by, 'Ship-By Date' %>
+                <%= main_form.text_field :ship_by, { class: 'form-control datepicker', placeholder: 'Ship-By Date' } %>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= main_form.label :shipping_mode, 'Shipping Mode' %>
+        <%= main_form.select :shipping_mode, @existing_shipping_modes, { :prompt => true }, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+        <%= main_form.label :payment_term, 'Payment Term' %>
+        <%= main_form.text_field :payment_term, { class: 'form-control', placeholder: 'Payment Term' } %>
+    </div>
+
+    <!-- Items -->
+    <div class="well well-sm items">
+      <h4><span class="glyphicon glyphicon-inbox">&nbsp;</span>Items</h4>
+      <% @order.items.each do |i| %>
+        <%= main_form.fields_for :items, i do |item| %>
+          <%= render 'edit_item_fields', { f: item } %>
+        <% end %>
+      <% end %>
+      <%= link_to_add_fields "Add Item", main_form, :items, "add_fields_item"%>
+    </div>
+    <%= render "shared/resetsave", { associated_form: main_form } %>
+<% end %>
