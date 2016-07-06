@@ -1,0 +1,18 @@
+language: ruby
+cache: bundler
+rvm:
+  - 2.2.2
+env:
+  - POSTMARK_API_KEY=POSTMARK_API_TEST
+bundler_args: "--jobs=3 --retry=3"
+script:
+  - bundle exec rake db:test:prepare
+  - bundle exec rspec spec/policies/policies.rb
+  - bundle exec rspec spec
+services:
+  - postgresql
+deploy:
+  provider: heroku
+  app: witesy-dev
+  api_key:
+    secure: q/D4ErUSBOfirTKGpieZG93ctOQepy2upkK+B2E5jlPo/44OjAU1Jb9YoUKLqbWZ1fqARGkqoQFCqck/jksG8YTlXwRMi00Nrl3V77WuvMjJ2j9P65SfeaXoUy4JRmLXIrKj7a0oZW7o1M+DSCBtubX3P8Wz0WElWBiAIs78LwUVQXtEjpm1Iwz8El84uabQbGrBi3jJWyuiqiA5s6VwxztL0Ip2kdwqP2UHTLI/dIOxOmcbrTiyE2zNODwdXPa1ksrkgQMja3QYQemKm/GoOtWALClHiIDeDaw6FGRyjDdKnVvBj55Wg4Jsr4lSCy7dcAWw7uv14Ok3G/UHxq+2bX6HEGkQ2sMvH1XQH0FWpvCQAbBSu1kO5AYrXtoHZdtWz29RGpiFLdZwjRZh+cHpYAF28bGOsxu2JSclGBVTN+FhCvDQyAhfxtfBv0m5DE/bITKd0bKiww6jPvH6AF+HNbH9Q5Y9b7YFqSWx5ME1ItYX5vITG1ZE8UE6z+EJ/rIF2SacbjCDxZsThD5Kc+83cq0qaoqd5F1QwILk9abO1S0ee+ESeJra7qsjMc+SGzpeFyUfrmkqmLe5UD7MW11DrCDaKJI8khy5YMXiaYEjg2nZS0eKrb7M7+0nkA6FqHBDCMuG+plHFEgXcn3uPimg1FTgneugdjIA7UBfP2Vetn8=
