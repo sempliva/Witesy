@@ -16,18 +16,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 =end
 
 class OrdersController < ApplicationController
+  before_action :check_user_status
   before_action :load_shipping_modes, only: [:new, :create, :edit, :update]
+  before_action :set_user, only: [:show, :edit, :destroy]
+
   def index
     respond_to do |format|
       format.html {
         sorting_param = params[:sort] ? params[:sort] : :order_number
         @orders = Order.includes(:customer).order(sorting_param).page(params[:page]).per(WitesyConfiguration::PAGINATION_PREFERENCE)
+        authorize Order
       }
     end
   end
 
   def new
     @order = Order.new
+    authorize @order
     @order.order_number = get_next_sorted(Order.select(:order_number).map(&:order_number))
     @order.payment_term = "NET 30"
     @customer = Customer.new
@@ -44,6 +49,7 @@ class OrdersController < ApplicationController
     begin
       Order.transaction do
         @order = Order.new(order_params)
+        authorize @order
         # Check if the customer exists and remove it from the params list to prevent it to be saved.
         _customer = Customer.find_by_name(params[:order][:customer_name])
 
@@ -69,18 +75,11 @@ class OrdersController < ApplicationController
      end
     end
 
-  def show
-    @order = Order.find(params[:id])
-  end
-
-  def edit
-    @order = Order.find(params[:id])
-  end
-
   def update
     begin
       Order.transaction do
         @order = Order.find(params[:id])
+        authorize @order
         if @order.update(order_params)
           flash[:success] = "Order updated!"
           redirect_to @order
@@ -96,6 +95,7 @@ class OrdersController < ApplicationController
 
  def destroy_multiple
     Order.transaction do
+      authorize Order
       if Order.where(:id => params[:orders_ids]).destroy_all
         respond_to do |format|
           flash[:success] = "Orders have been deleted successfully!"
@@ -112,7 +112,6 @@ class OrdersController < ApplicationController
   end
 
   def destroy
-    @order = Order.find(params[:id])
     if @order.destroy
       flash[:success] = "Order has been deleted successfully!"
       redirect_to "/orders/"
@@ -123,6 +122,11 @@ class OrdersController < ApplicationController
   end
 
 private
+  def set_user
+    @order = Order.find(params[:id])
+    authorize @order
+  end
+
   def load_shipping_modes
     @existing_shipping_modes = ShippingMode.all.collect { |p| [p.mode, p.mode] }
   end

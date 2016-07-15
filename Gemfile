@@ -47,3 +47,10 @@ end
 
 gem 'kaminari'
 gem 'jquery-ui-rails'
+gem "pundit"
+# Postmark for outbound/inbound email.
+gem 'postmark-rails', '~> 0.8.0'
+group :development, :test do
+  gem 'rspec-rails', '~> 3.4'
+  gem "factory_girl_rails", "~> 4.0"
+end

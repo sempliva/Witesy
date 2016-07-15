@@ -18,6 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # Few Witesy-specific constants.
 
 module WitesyConfiguration
-  INPUT_ALLOWED_SYMBOLS = /\A[a-zA-Z0-9\-,\.\s&]+\z/
+  INPUT_ALLOWED_SYMBOLS = /\A[a-zA-Z0-9]+\z/
   PAGINATION_PREFERENCE = 50
+  SALT = ENV['SALT'] ||= 'WITESYEMPTYSALT'
+
+  module Auth
+    USERNAME = ENV['HTTP_AUTH_USERNAME']
+    PASSWORD = ENV['HTTP_AUTH_PASSWORD']
+  end
+  module Mail
+    # Postmark has to be aware of the following value ("Signatures" on postmarkapp.com).
+    # WARNING: outbound mail won't work with unauthorized sender!
+    SENDER = 'john@0xf0.eu'
+  end
 end

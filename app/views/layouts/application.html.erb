@@ -14,76 +14,84 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %>
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Witesy</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap-theme.min.css">
-    <%= stylesheet_link_tag    "application", media: "all" %>
-    <%= javascript_include_tag "application" %>
-    <%= csrf_meta_tags %>
-</head>
-<body style>
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle Navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/" data-no-turbolink="true"><span class="glyphicon glyphicon-home"></span></a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            Customer
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/customers" data-no-turbolink="true">List all</a></li>
-                            <li><a href="/customers/new" data-no-turbolink="true">New</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            Order
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/orders" data-no-turbolink="true">List all</a></li>
-                            <li><a href="/orders/new" data-no-turbolink="true">New</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            Shipping Modes
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/shipping_modes" data-no-turbolink="true">List all</a></li>
-                            <li><a href="/shipping_modes/new" data-no-turbolink="true">New</a></li>
-                        </ul>
-                    </li>
-                </ul>
+<html>
+    <head>
+        <title>Witesy</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap-theme.min.css">
+        <%= stylesheet_link_tag    "application", media: "all" %>
+        <%= javascript_include_tag "application" %>
+        <%= csrf_meta_tags %>
+
+    </head>
+
+    <body style>
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle Navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/welcome/index" data-no-turbolink="true"><span class="glyphicon glyphicon-home"></span>Witesy</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <% if $current_user %>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Orders <b class="caret"></b> </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/orders" data-no-turbolink="true">List all</a>
+                                </li>
+                                <li>
+                                    <a href="/orders/new" data-no-turbolink="true">New</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Customers <b class="caret"></b> </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/customers" data-no-turbolink="true">List all</a>
+                                </li>
+                                <li>
+                                    <a href="/customers/new" data-no-turbolink="true">New</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Shipping Mode <b class="caret"></b> </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/shipping_modes" data-no-turbolink="true">List all</a>
+                                </li>
+                                <li>
+                                    <a href="/shipping_modes/new" data-no-turbolink="true">New</a>
+                                </li>
+                            </ul>
+                        </li>
+                      <% end %>
+
+                    </ul>
+                    <div class="navbar-form navbar-right">
+                        <% if $current_user %>
+                          Logged in as <%= $current_user.email %>.
+                          <%= link_to 'Log Out', welcome_logout_path %>
+                        <% end%>
+
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <%= render 'shared/https_warning' unless URI(request.original_url).scheme == "https" %>
-        <%= render 'shared/flash_messages' unless flash.empty? %>
-    <%= yield %>
-</div>
-<script src="/bootstrap/js/bootstrap.min.js"></script>
-</body>
+        <div class="container">
+            <%= render 'shared/flash_messages' unless flash.empty? %>
+            <%= yield %>
+        </div>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+    </body>
 </html>

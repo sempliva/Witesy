@@ -27,13 +27,20 @@ Rails.application.routes.draw do
   delete 'orders/destroy_multiple' => 'orders#destroy_multiple'
   resources :orders
   resources :shipping_modes
+  resources :users
+  resources :tokens
+
+  get 'welcome/:token/confirm_email/' => 'welcome#confirm_email', as: "confirm_email"
+  get 'welcome/index'
+  post 'welcome/authenticate'
+  get 'welcome/logout'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
   # You can have the root of your site routed with "root"
-  root :to => "orders#index"
+  root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

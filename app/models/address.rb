@@ -27,10 +27,14 @@ class Address < ActiveRecord::Base
   end
 
   def state=(value)
-    write_attribute(:state, value.upcase)
+    if value
+      write_attribute(:state, value.upcase)
+    end
   end
 
   def contact_name=(value)
-    write_attribute(:contact_name, value.try(:strip))
+    if value
+      write_attribute(:contact_name, value.try(:strip))
+    end
   end
 end

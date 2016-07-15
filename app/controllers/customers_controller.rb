@@ -16,18 +16,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 =end
 
 class CustomersController < ApplicationController
+  before_action :check_user_status
   before_action :set_customer, only: [:show, :edit, :update, :destroy]
+
   def index
     @customers = Customer.all.order(label: :asc)
+    authorize Customer
   end
 
   def new
     @customer = Customer.new
     @customer.addresses.build
+    authorize @customer
   end
 
   def create
     @customer = Customer.create(customer_params)
+    authorize @customer
     if @customer.save
       flash[:success] = "Customer created!"
       redirect_to @customer
@@ -74,6 +79,7 @@ class CustomersController < ApplicationController
 private
   def set_customer
     @customer = Customer.find(params[:id])
+    authorize @customer
   end
 
   def customer_params
